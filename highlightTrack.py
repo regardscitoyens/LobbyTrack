@@ -5,7 +5,7 @@ import re
 
 def file2array(file):
     mots = []
-    for mot in re.split("\s+", re.sub('L(\d)', r'L \1', re.sub('([«"»])', r' \1 ', re.sub('\n+', ' <br/> ', re.sub(u'’', "'", re.sub("[‑\.!,;–()'-]", " ", file.read())))))):
+    for mot in re.split("\s+", re.sub('L(\d)', r'L \1', re.sub('([«"»])', r' \1 ', re.sub('\n+', ' <br/> ', re.sub(u'’', "'", re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())))))):
         if mot:
             mots.append(mot)
     return mots
