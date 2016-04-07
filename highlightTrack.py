@@ -3,6 +3,8 @@
 import sys
 import re
 
+ngram = 4
+
 def file2array(file):
     mots = []
     for mot in re.split("\s+", re.sub('L(\d)', r'L \1', re.sub('([«"»])', r' \1 ', re.sub('\n+', ' <br/> ', re.sub(u'’', "'", re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())))))):
@@ -30,14 +32,17 @@ f = open(sys.argv[2], 'r')
 mots2 = file2array(f)
 f.close()
 
+if len(sys.argv) > 3 : 
+    ngram = int(sys.argv[3])
+
 match1 = [0] * len(mots1)
 match2 = [0] * len(mots2)
 
-for i in range(0, len(mots1) - 4):
-    for y in range(0, len(mots2) - 4):
-        if re.match(' '.join(mots1[i:i+4]), ' '.join(mots2[y:y+4]), re.I):
-            match1[i:i+4] = [1] * 4
-            match2[y:y+4] = [1] * 4
+for i in range(0, len(mots1) - ngram):
+    for y in range(0, len(mots2) - ngram):
+        if re.match(' '.join(mots1[i:i+ngram]), ' '.join(mots2[y:y+ngram]), re.I):
+            match1[i:i+ngram] = [1] * ngram
+            match2[y:y+ngram] = [1] * ngram
 
 print('''
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8">
