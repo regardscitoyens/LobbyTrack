@@ -15,12 +15,12 @@ def file2array(file):
 
 def printHighlight(mots, match):
     html = ''
-    for i in range (0, len(mots)):
+    for i, mot in enumerate(mots):
         if match[i]:
             html += '<span class="highlight">';
         else:
             html += '<span>';
-        html += mots[i]
+        html += mot
         html += ' </span>';
     html = '<p>'+re.sub('<br/>', '</p><p>', html)+'</p>'
     print(html)
