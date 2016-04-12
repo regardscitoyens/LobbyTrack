@@ -25,15 +25,13 @@ def printHighlight(mots, match):
     html = '<p>'+re.sub('<br/>', '</p><p>', html)+'</p>'
     print(html)
 
-f = open(sys.argv[1], 'r')
-mots1 = file2array(f)
-f.close()
+with open(sys.argv[1], 'r') as f:
+    mots1 = file2array(f)
 
-f = open(sys.argv[2], 'r')
-mots2 = file2array(f)
-f.close()
+with open(sys.argv[2], 'r') as f:
+    mots2 = file2array(f)
 
-if len(sys.argv) > 3 : 
+if len(sys.argv) > 3 :
     ngram = int(sys.argv[3])
 
 match1 = [0] * len(mots1)
