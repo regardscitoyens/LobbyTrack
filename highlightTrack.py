@@ -6,11 +6,12 @@ import re
 ngram = 4
 
 def file2array(file):
-    mots = []
-    for mot in re.split("\s+", re.sub('L(\d)', r'L \1', re.sub('([«"»])', r' \1 ', re.sub('\n+', ' <br/> ', re.sub('’', '\'', re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())))))):
-        if mot:
-            mots.append(mot)
-    return mots
+    txt = re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())
+    txt = re.sub('’', '\'', txt)
+    txt = re.sub('\n+', ' <br/> ', txt)
+    txt = re.sub('([«"»])', r' \1 ', txt)
+    txt = re.sub('L(\d)', r'L \1', txt)
+    return [mot for mot in re.split("\s+", txt) if mot]
 
 def printHighlight(mots, match):
     html = ''
