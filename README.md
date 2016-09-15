@@ -36,6 +36,8 @@ Pour comparer un document parlementaire (en texte brut) avec le document origina
 
     python3 highlightTrack.py document_lobby.txt document_parlementaire.txt > highlight.html
 
-Le fichier résultant *highlight.html* permet une comparaison graphique des deux documents :
+Le fichier résultant *highlight.html* permet une comparaison graphique des deux documents.
+
+Voici un exemple avec une liasse d'amendement soumise aux parlementaire par l'[ANIA](http://www.ania.net/alimentation-sante/etiquetage2005) et l'[un des amendements trouvé](http://nosdeputes.fr/14/amendement/2302/AS685) :
 
 ![Exemple de comparaison de documents](highlight.jpg)
