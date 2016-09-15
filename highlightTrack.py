@@ -6,17 +6,18 @@ import re
 ngram = 4
 
 def file2array(file):
-    mots = []
-    for mot in re.split("\s+", re.sub('L(\d)', r'L \1', re.sub('([«"»])', r' \1 ', re.sub('\n+', ' <br/> ', re.sub(u'’', "'", re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())))))):
-        if mot:
-            mots.append(mot)
-    return mots
+    txt = re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())
+    txt = re.sub('’', '\'', txt)
+    txt = re.sub('\n+', ' <br/> ', txt)
+    txt = re.sub('([«"»])', r' \1 ', txt)
+    txt = re.sub('L(\d)', r'L \1', txt)
+    return [mot for mot in re.split("\s+", txt) if mot]
 
 def printHighlight(mots, match, withnbmots=""):
     html = ''
     nb = 0
     max = 0
-    for i in range (0, len(mots)):
+    for i, mot in enumerate(mots):
         if match[i]:
             html += '<span class="highlight">'
             nb += 1
@@ -25,22 +26,20 @@ def printHighlight(mots, match, withnbmots=""):
             if nb > max:
                 max = nb
             nb = 0
-        html += mots[i]
+        html += mot
         html += ' </span>';
     html = '<p>'+re.sub('<br/>', '</p><p>', html)+'</p>'
     print(html)
     if (withnbmots):
         sys.stderr.write(str(max)+";"+withnbmots + "\n")
 
-f = open(sys.argv[1], 'r')
-mots1 = file2array(f)
-f.close()
+with open(sys.argv[1], 'r') as f:
+    mots1 = file2array(f)
 
-f = open(sys.argv[2], 'r')
-mots2 = file2array(f)
-f.close()
+with open(sys.argv[2], 'r') as f:
+    mots2 = file2array(f)
 
-if len(sys.argv) > 3 : 
+if len(sys.argv) > 3 :
     ngram = int(sys.argv[3])
 
 match1 = [0] * len(mots1)
