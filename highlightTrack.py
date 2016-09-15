@@ -12,17 +12,25 @@ def file2array(file):
             mots.append(mot)
     return mots
 
-def printHighlight(mots, match):
+def printHighlight(mots, match, withnbmots=""):
     html = ''
+    nb = 0
+    max = 0
     for i in range (0, len(mots)):
         if match[i]:
-            html += '<span class="highlight">';
+            html += '<span class="highlight">'
+            nb += 1
         else:
             html += '<span>';
+            if nb > max:
+                max = nb
+            nb = 0
         html += mots[i]
         html += ' </span>';
     html = '<p>'+re.sub('<br/>', '</p><p>', html)+'</p>'
     print(html)
+    if (withnbmots):
+        sys.stderr.write(str(max)+";"+withnbmots + "\n")
 
 f = open(sys.argv[1], 'r')
 mots1 = file2array(f)
@@ -68,7 +76,7 @@ print('''
 <h2>Document similaire</h2>
 <div class="frame">
 ''')
-printHighlight(mots2, match2)
+printHighlight(mots2, match2, sys.argv[2])
 print('''
 </div>
 </div>
