@@ -6,10 +6,10 @@ import re
 ngram = 4
 
 def file2array(file):
-    txt = re.sub("[\?\+‑\.!,;–()'’-]", " ", file.read())
-    txt = re.sub('’', '\'', txt)
+    txt = re.sub(u"[\?\+‑\.!,;–()'’-]", " ", file.read().decode('UTF-8'))
+    txt = re.sub(u'’', '\'', txt)
     txt = re.sub('\n+', ' <br/> ', txt)
-    txt = re.sub('([«"»])', r' \1 ', txt)
+    txt = re.sub(u' *([«"»]) *', r' " ', txt)
     txt = re.sub('L(\d)', r'L \1', txt)
     return [mot for mot in re.split("\s+", txt) if mot]
 
@@ -29,7 +29,7 @@ def printHighlight(mots, match, withnbmots=""):
         html += mot
         html += ' </span>';
     html = '<p>'+re.sub('<br/>', '</p><p>', html)+'</p>'
-    print(html)
+    print(html.encode('UTF-8'))
     if (withnbmots):
         sys.stderr.write(str(max)+";"+withnbmots + "\n")
 
