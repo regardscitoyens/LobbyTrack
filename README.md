@@ -20,7 +20,7 @@ Pour trouver les documents sénatoriaux :
 
     bash queryFromTxt.sh document_lobby.txt nossenateurs.fr
 
-Ces scripts produisent des fichiers triés par pertinence pour chaque document intéressant (plus pertinent en premier) :
+Ces scripts produisent des fichiers triés par pertinence pour chaque document intéressant dans le même répertoire que celui où se situait le fichier initial (plus pertinent en premier) :
 
 Pour NosDéputés.fr (avec un n-gram de 5 mots) :
 
