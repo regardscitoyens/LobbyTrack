@@ -7,9 +7,10 @@ ngram = 4
 
 def file2array(file):
     txt = re.sub(u"[\?\+‑\.!,;–()'’-]", " ", file.read().decode('UTF-8'))
-    txt = re.sub(u'’', '\'', txt)
+    txt = txt.replace('|', ' ')
+    txt = txt.replace(u'’', '\'')
     txt = re.sub('\n+', ' <br/> ', txt)
-    txt = re.sub(u' *([«"»]) *', r' " ', txt)
+    txt = re.sub(u' *([«"»:;]) *', r' " ', txt)
     txt = re.sub('L(\d)', r'L \1', txt)
     return [mot for mot in re.split("\s+", txt) if mot]
 
@@ -50,7 +51,6 @@ for i in range(0, len(mots1) - ngram):
         if re.match(' '.join(mots1[i:i+ngram]), ' '.join(mots2[y:y+ngram]), re.I):
             match1[i:i+ngram] = [1] * ngram
             match2[y:y+ngram] = [1] * ngram
-
 print('''
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <style>
