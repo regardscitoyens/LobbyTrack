@@ -8,7 +8,7 @@ DIRMOTS=$(echo $TXTMOTS | sed 's/.txt//' | sed 's/ /_/g' | sed "s/'//ig")"/html"
 
 mkdir -p "$DIRMOTS"
 
-cat "$CSVMOTS" |  grep -v Texteloi | awk -F ';' '{print "echo DIRMOTS/"$3".txt ; #curl -s http://www.nossenateurs.fr"$4" | sed @s/<[^>]*>/\\n/g@ | sed @s/.amp;lt;/</g@ | sed @s/.amp;gt;/>/g@  | sed @s/<[^>]*>//g@ > @DIRMOTS/"$3".txt@" }' | sed 's/@/"/g' | sed "s@DIRMOTS@$DIRMOTS@g" > /tmp/sh.txt 
+cat "$CSVMOTS" |  grep -v Texteloi | grep -v NonObjectPage | awk -F ';' '{print "echo DIRMOTS/"$3".txt ; curl -s http://www.nossenateurs.fr"$4" | sed @s/<[^>]*>/\\n/g@ | sed @s/.amp;lt;/</g@ | sed @s/.amp;gt;/>/g@  | sed @s/<[^>]*>//g@ > @DIRMOTS/"$3".txt@" }' | sed 's/@/"/g' | sed "s@DIRMOTS@$DIRMOTS@g" > /tmp/sh.txt 
 
 bash /tmp/sh.txt | head -n 1000 | while read file ; do 
 	echo python $DIRBIN/highlightTrack.py '"'$TXTMOTS'"' $file
