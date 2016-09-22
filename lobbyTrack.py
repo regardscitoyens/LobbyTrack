@@ -29,9 +29,11 @@ def getCounterByNGram(gram, counter):
         # https://www.nosdeputes.fr/recherche/loi+1948?format=csv
         url = 'http://'+site+'/recherche/'+str_gram+'?format=csv'
         print('-- Url appelé : '+url)
-        response = requests.get(url, timeout=3)
-        print ('-- Code retour : ' +str(response.status_code))
+        response = getResponseFromRequest(url, 3)
+        if not response:
+            return counter
 
+        print ('-- Code retour : ' +str(response.status_code))
         # Améliorer le résultat du contenu
         urls = re.findall(b'http://.*/csv', response.content)
         #print('-- urls :'+urls)
@@ -40,11 +42,12 @@ def getCounterByNGram(gram, counter):
             counter[url] += 1
         return counter
 
-
-
-
-#http://cocolulu.regardscitoyens.org/LobbyTrackBio/biodiversiteglobal/synthese.html
-
+def getResponseFromRequest(url, nbtries):
+    try:
+        return requests.get(url, timeout=1)
+    except requests.exceptions.RequestException as e:
+        if (nbtries > 1):
+            getResponseFromRequest(url,nbtries-1)
 
 if __name__ == '__main__':
     raw_string = getStringFromFile('example/document_lobby_example.txt')
