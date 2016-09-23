@@ -6,6 +6,9 @@ from nltk import ngrams
 import re
 from collections import Counter
 import argparse
+from os.path import expanduser
+import os
+import hashlib
 
 def getStringFromFile(filename):
     f = open(filename)
@@ -39,6 +42,11 @@ def getCounterByNGram(gram, counter, site):
             counter[url] += 1
         return counter
 
+def computeMD5hash(string):
+    m = hashlib.md5()
+    m.update(string.encode('utf-8'))
+    return m.hexdigest()
+
 def getResponseFromRequest(url, nbtries):
     try:
         return requests.get(url, timeout=1)
@@ -52,6 +60,11 @@ if __name__ == '__main__':
     parser.add_argument("--grams", help="grams", default=5)
     parser.add_argument("file", help="file to check")
     args = parser.parse_args()
+
+    hash = computeMD5hash(args.file)
+    path = expanduser("~")+"/.lobbyTrack/"+hash
+    if not os.path.exists(path):
+        os.makedirs(path)
 
     raw_string = getStringFromFile(args.file)
     xgrams = getNGrams(raw_string, args.grams)
